@@ -1,6 +1,8 @@
 package main
 
-import "mic/leetcode_100"
+import (
+	"mic/leetcode_100"
+)
 
 type ListNode = leetcode_100.ListNode
 
@@ -28,6 +30,30 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	return res.Next
 }
 
+func mergeTwoLists2(list1 *ListNode, list2 *ListNode) *ListNode {
+	res := &ListNode{}
+	cur := res
+	for list1 != nil || list2 != nil {
+		if list1 == nil {
+			cur.Next = list2
+			list2 = list2.Next
+		} else if list2 == nil {
+			cur.Next = list1
+			list1 = list1.Next
+		} else {
+			if list1.Val <= list2.Val {
+				cur.Next = list1
+				list1 = list1.Next
+			} else {
+				cur.Next = list2
+				list2 = list2.Next
+			}
+		}
+		cur = cur.Next
+	}
+	return res.Next
+}
+
 func main() {
 	node1_1 := &ListNode{Val: 1}
 	node1_2 := &ListNode{Val: 2}
@@ -41,5 +67,5 @@ func main() {
 	node2_1.Next = node2_2
 	node2_2.Next = node2_3
 
-	mergeTwoLists(node1_1, node2_1).Print()
+	mergeTwoLists2(node1_1, node2_1).Print()
 }
